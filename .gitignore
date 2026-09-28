@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+feeds_data.json
+correlated_data.json
+rapport.md
+.venv/

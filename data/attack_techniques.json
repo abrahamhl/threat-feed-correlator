@@ -1,0 +1,14 @@
+{
+  "T1190": {
+    "name": "Exploit Public-Facing Application",
+    "keywords": ["RCE", "Remote Code Execution", "SQL Injection", "XSS"]
+  },
+  "T1059": {
+    "name": "Command and Scripting Interpreter",
+    "keywords": ["PowerShell", "cmd.exe", "Bash", "Shell"]
+  },
+  "T1078": {
+    "name": "Valid Accounts",
+    "keywords": ["Authentication Bypass", "Default Credentials"]
+  }
+}
