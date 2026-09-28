@@ -4,3 +4,5 @@ feeds_data.json
 correlated_data.json
 rapport.md
 .venv/
+__pycache__/
+*.pyc
