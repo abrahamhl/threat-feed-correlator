@@ -1,20 +1,25 @@
 # Threat Feed Correlator
 
-![Tests Passing](https://img.shields.io/badge/tests-5%20passed-success)
+![Tests Passing](https://img.shields.io/badge/tests-7%20passed-success)
 ![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Dependencies](https://img.shields.io/badge/dependencies-0-success)
 
-**Threat Feed Correlator** is an innovative OSINT tool built to cross-correlate multiple public Cyber Threat Intelligence (CTI) feeds (NCSC-NL, CERT-EU, BSI, CISA KEV) and produce a unified, deduplicated, and prioritized threat report. 
+Cyber threat analysts spend hours manually checking disparate national CERT feeds to identify vulnerabilities being actively targeted. **Threat Feed Correlator** automates this by cross-referencing public advisories, mapping them to EPSS probability, and generating a unified, deduplicated daily briefing.
 
-This project bridges the gap between scattered daily advisories and a real SOC workflow. By mapping CVEs to MITRE ATT&CK techniques and simulating EPSS probability enrichment, this tool replaces manual daily checking of multiple feeds for CTI analysts.
+## What it correlates
 
-## Features
+| Feed | What it gives | Format |
+|---|---|---|
+| **NCSC-NL** | Dutch national cyber security advisories | RSS |
+| **CERT-EU** | European Union institutional advisories | RSS / JSON |
+| **BSI** | German Federal Office for Information Security | RSS |
+| **CISA KEV** | Known Exploited Vulnerabilities catalog | JSON |
+| **EPSS** | Exploit Prediction Scoring System probabilities | API (CSV/JSON) |
 
-- **Cross-feed Correlation**: Automatically matches CVEs across different national and international feeds.
-- **Scoring & Prioritization**: Higher correlation scores for vulnerabilities confirmed by multiple independent feeds.
-- **MITRE ATT&CK Mapping**: Keyword-based extraction to map vulnerabilities to techniques.
-- **Multilingual Reporting**: Generates Markdown reports in English, Dutch, and Spanish.
-- **Zero Dependencies**: Pure Python 3 standard library implementation.
+## How correlation works
+
+The system fetches the latest advisories from the configured feeds and normalizes them into a standard internal format. It then groups them by CVE ID, scoring the vulnerability based on how many independent CERTs have issued an advisory for it. Finally, it enriches the prioritized list with CISA KEV status and EPSS scores to help analysts focus on what matters most.
 
 ## Quick Start
 
@@ -25,8 +30,8 @@ python -m correlator fetch
 # 2. Correlate, deduplicate, and enrich
 python -m correlator correlate
 
-# 3. Generate a prioritized Markdown report (English, Dutch, or Spanish)
-python -m correlator report --lang nl --out rapport.md
+# 3. Generate a prioritized Markdown report
+python -m correlator report --out report.md
 ```
 
 ## Example Output
@@ -34,13 +39,7 @@ python -m correlator report --lang nl --out rapport.md
 See [examples/sample-correlation-report.md](examples/sample-correlation-report.md) for a sample of the generated report.
 
 ## Scope & Limitations
-- **Offline testing**: All unit tests run offline using fixtures and mocks to guarantee consistent CI/CD execution without external network dependency.
-- **Live Feeds**: The `fetch` command requires an active internet connection to download from public RSS feeds (NCSC-NL, CERT-EU, etc.).
-- **Not a SIEM Replacement**: This tool is designed for daily OSINT/CTI briefings and analyst augmentation, not for real-time log ingestion or alerting. 
 
-## Testing
-
-Run tests manually using:
-```bash
-python -m unittest discover tests
-```
+- **Offline testing**: All unit tests run offline using static fixtures.
+- **Live Feeds**: The `fetch` command requires an active internet connection to download from public RSS feeds.
+- **Educational / Workflow Tool**: This is a standalone Python CLI tool for automating OSINT collection, not a real-time SIEM or enterprise threat intelligence platform.
